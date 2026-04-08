@@ -51,7 +51,7 @@ export const config: SheriffConfig = {
     'app*': [sameTag, 'root'],
     'type:api': [({ to }) => to.startsWith('type')],
     'type:feature': ({ to }) => to.startsWith('type:'),
-    'type:data': ['type:types', 'type:utils', 'type:data',],
+    'type:data': ['type:types', 'type:utils', 'type:data', 'type:api'],
     'type:ui': ['type:types', 'type:utils'],
     'type:utils': ['type:types', 'type:utils'],
     'type:types': noDependencies,
