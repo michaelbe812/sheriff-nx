@@ -7,7 +7,7 @@ const api = (from: string, to: string) => ({
 export const config: SheriffConfig = {
   enableBarrelLess: true,
   showWarningOnBarrelCollision: false,
-
+  entryFile: 'apps/client/src/main.ts',
   modules: {
     apps: {
       '<app>': ['app:<app>'],
@@ -18,17 +18,12 @@ export const config: SheriffConfig = {
           '<feature>': ['feature:<feature>', 'type:feature'],
           '<feature>/ui': ['feature:<feature>:api', 'type:ui'],
           '<feature>/data': ['feature:<feature>:data', 'type:data'],
-          '<feature>/events': ['feature:<feature>:events', 'type:events'],
           '<feature>/types': ['feature:<feature>:types', 'type:types'],
           '<feature>/api': ['feature:<feature>:api', 'type:api'],
           '<feature>/utils': ['feature:<feature>:utils', 'type:utils'],
 
           '<feature>/feat-<feat>': ['feature:<feature>:<feat>', 'type:feature'],
           '<feature>/feat-<feat>/api': ['feature:<feature>:<feat>', 'type:api'],
-          '<feature>/feat-<feat>/events': [
-            'feature:<feature>:<feat>',
-            'type:events',
-          ],
           '<feature>/feat-<feat>/data': [
             'feature:<feature>:<feat>',
             'type:data',
@@ -56,9 +51,8 @@ export const config: SheriffConfig = {
     'app*': [sameTag, 'root'],
     'type:api': [({ to }) => to.startsWith('type')],
     'type:feature': ({ to }) => to.startsWith('type:'),
-    'type:data': ['type:types', 'type:utils', 'type:data', 'type:events'],
-    'type:ui': ['type:types', 'type:utils', 'type:events'],
-    'type:events': ['type:types', 'type:events'],
+    'type:data': ['type:types', 'type:utils', 'type:data',],
+    'type:ui': ['type:types', 'type:utils'],
     'type:utils': ['type:types', 'type:utils'],
     'type:types': noDependencies,
     ...api('bookings', 'customers'),
@@ -71,12 +65,12 @@ export const config: SheriffConfig = {
         const toTags = to.split(':');
         const isToSharedDomain =
           toTags.length > 2 &&
-          ['data', 'ui', 'types', 'events', 'api', 'utils'].includes(toTags[2]);
+          ['data', 'ui', 'types',  'api', 'utils'].includes(toTags[2]);
 
         const fromTags = from.split(':');
         const isFromFeature =
           fromTags.length > 2 &&
-          !['data', 'ui', 'types', 'events', 'api', 'utils'].includes(
+          !['data', 'ui', 'types',  'api', 'utils'].includes(
             fromTags[2],
           );
 
@@ -92,7 +86,6 @@ export const config: SheriffConfig = {
           'data',
           'ui',
           'types',
-          'events',
           'api',
           'utils',
         ].includes(toTags[2]);
@@ -100,7 +93,6 @@ export const config: SheriffConfig = {
           'data',
           'ui',
           'types',
-          'events',
           'api',
           'utils',
         ].includes(fromTags[2]);
