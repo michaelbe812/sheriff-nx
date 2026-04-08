@@ -49,7 +49,7 @@ export const config: SheriffConfig = {
     root: ['type:api', 'type:feature'],
     '*': 'shared',
     'app*': [sameTag, 'root'],
-    'type:api': [({ to }) => to.startsWith('type')],
+    'type:api': ['type:types', 'type:utils', 'type:data'],
     'type:feature': ({ to }) => to.startsWith('type:'),
     'type:data': ['type:types', 'type:utils', 'type:data', 'type:api'],
     'type:ui': ['type:types', 'type:utils'],
@@ -59,8 +59,13 @@ export const config: SheriffConfig = {
     'feature:*': [
       sameTag, // feature:bookings -> feature:bookings
       ({ from, to }) => to.startsWith(from), // feature:bookings -> feature:bookings:feature,
-      ({ from, to }) =>
-        from.endsWith(':api') && to.startsWith(from.slice(0, -4)), // feature:customers:api -> feature:customers:*
+      ({ from, to }) => {
+        if (!from.endsWith(':api')) return false;
+        const base = from.slice(0, -4); // feature:customers:
+        if (!to.startsWith(base)) return false;
+        const suffix = to.slice(base.length);
+        return ['data', 'types', 'utils'].includes(suffix);
+      }, // feature:customers:api -> feature:customers:(types|utils|data)
       ({ from, to }) => {
         const toTags = to.split(':');
         const isToSharedDomain =
