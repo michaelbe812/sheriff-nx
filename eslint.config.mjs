@@ -1,7 +1,8 @@
 import nx from '@nx/eslint-plugin';
+import tseslint from 'typescript-eslint';
 
-export default [
-  ...nx.configs['flat/base'],
+export default tseslint.config(
+ ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
   ...nx.configs['flat/javascript'],
   {
@@ -39,4 +40,4 @@ export default [
     // Override or add rules here
     rules: {},
   },
-];
+)
