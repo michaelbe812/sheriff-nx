@@ -1,6 +1,6 @@
 import nx from '@nx/eslint-plugin';
 import tseslint from 'typescript-eslint';
-
+import sheriff from '@softarc/eslint-plugin-sheriff';
 export default tseslint.config(
  ...nx.configs['flat/base'],
   ...nx.configs['flat/typescript'],
@@ -10,6 +10,7 @@ export default tseslint.config(
   },
   {
     files: ['**/*.ts', '**/*.tsx', '**/*.js', '**/*.jsx'],
+    extends: [sheriff.configs.all],
     rules: {
       '@nx/enforce-module-boundaries': [
         'error',
